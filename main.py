@@ -397,10 +397,17 @@ def upload_to_youtube(video_path, thumb_path, headlines):
 
     # If no valid credentials — open browser for login
     if not creds or not creds.valid:
-        flow  = InstalledAppFlow.from_client_secrets_file(
-            "client_secret.json", SCOPES
-        )
-        creds = flow.run_local_server(port=0)
+        if creds and creds.expired and creds.refresh_token:
+            from google.auth.transport.requests import Request
+            print("  Token expired — refreshing automatically...")
+            creds.refresh(Request())
+            with open("token.json", "w") as f:
+                f.write(creds.to_json())
+            print("  Token refreshed successfully.")
+        else:
+            print("  ERROR: No valid token found and cannot open browser on server.")
+            print("  Re-run locally to regenerate token.json then update YOUTUBE_TOKEN secret.")
+            raise Exception("Invalid token — needs re-authentication locally.")
 
         # Save token for future runs — no login needed again
         with open("token.json", "w") as f:
@@ -491,5 +498,10 @@ if __name__ == "__main__":
     print(f"Thumbnail ready: {thumb}\n")
 
     print("Step 7: Uploading to YouTube...")
-    video_id = upload_to_youtube(final_video, thumb, news)
-    print(f"\nDone! Video live at: https://youtube.com/watch?v={video_id}")
+    try:
+        video_id = upload_to_youtube(final_video, thumb, news)
+        print(f"\nDone! Video live at: https://youtube.com/watch?v={video_id}")
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise
