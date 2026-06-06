@@ -307,15 +307,32 @@ def create_thumbnail(headlines):
     # Left accent bar
     draw.rectangle([0, 0, 8, 720], fill=(255, 180, 0))
 
-    # Load fonts — Windows path, fallback to default
-    try:
-        font_large  = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 90)
-        font_medium = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 55)
-        font_small  = ImageFont.truetype("C:/Windows/Fonts/arial.ttf",   38)
-    except:
-        font_large  = ImageFont.load_default()
-        font_medium = ImageFont.load_default()
-        font_small  = ImageFont.load_default()
+    # Load fonts — tries Windows first, then Ubuntu (GitHub Actions), then default
+    font_large = font_medium = font_small = None
+
+    for path in [
+        "C:/Windows/Fonts/arialbd.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+    ]:
+        if os.path.exists(path):
+            font_large  = ImageFont.truetype(path, 90)
+            font_medium = ImageFont.truetype(path, 55)
+            break
+
+    for path in [
+        "C:/Windows/Fonts/arial.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
+    ]:
+        if os.path.exists(path):
+            font_small = ImageFont.truetype(path, 38)
+            break
+
+    if not font_large:
+        font_large = font_medium = ImageFont.load_default()
+    if not font_small:
+        font_small = ImageFont.load_default()
 
     today    = datetime.date.today().strftime("%d %b %Y")
     day_name = datetime.date.today().strftime("%A")

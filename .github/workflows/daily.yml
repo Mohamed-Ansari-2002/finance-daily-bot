@@ -21,7 +21,7 @@ jobs:
       - name: Install system dependency ffmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg --fix-missing
+          sudo apt-get install -y ffmpeg fonts-dejavu fonts-liberation --fix-missing
 
       - name: Install Python libraries
         run: |
