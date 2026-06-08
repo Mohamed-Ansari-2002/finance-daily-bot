@@ -1,6 +1,7 @@
 import requests
+import os
 
-PEXELS_API_KEY = "Paste API Key Here"
+PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY")
 
 # Search for finance related videos
 url = "https://api.pexels.com/videos/search"

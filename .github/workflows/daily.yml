@@ -3,7 +3,7 @@ name: Finance Daily YouTube Bot
 
 on:
   schedule:
-    - cron: "20 16 * * *"
+    - cron: "30 15 * * *" # 9:00 PM IST = 15:30 UTC
   workflow_dispatch: # allows manual trigger from GitHub UI anytime
 
 jobs:

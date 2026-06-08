@@ -2,7 +2,7 @@ import os
 from groq import Groq
 
 # Paste your key directly here for testing
-GROQ_API_KEY = "Paste Your Groq API Key Here"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 client = Groq(api_key=GROQ_API_KEY)
 
