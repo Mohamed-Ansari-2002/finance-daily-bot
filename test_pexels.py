@@ -1,6 +1,6 @@
 import requests
 
-PEXELS_API_KEY = "hEyjv8ac9CLfzt0KXNsqkNqQ2KUxIczQ2b1HSkQ5JcZkpDdK6cPGNyum"
+PEXELS_API_KEY = "Paste API Key Here"
 
 # Search for finance related videos
 url = "https://api.pexels.com/videos/search"
